@@ -91,7 +91,7 @@ public class 서해윤_6주차 {
 		list[2] = new Rect(10, 40);
 		
 		for(int i = 0; i < list.length; i++) list[i].redraw();
-		for(int i = 0; i < list.length; i++) System.out.println("면적은" + list[i].getArea());
+		for(int i = 0; i < list.length; i++) System.out.println("면적은 " + list[i].getArea());
 	}
 }
 
