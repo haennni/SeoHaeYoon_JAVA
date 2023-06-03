@@ -40,7 +40,7 @@ public class Check_Server extends JFrame{
 	}
 	
 	public void readWordList() {
-		File file = new File("word.txt");
+		File file = new File("/Users/seohaeyoon/Downloads/words.txt");
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			
@@ -48,7 +48,7 @@ public class Check_Server extends JFrame{
 				String word = br.readLine();
 				if(word == null)
 					break;
-				wordList.add(word);
+				wordList.add(0,word);
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -62,35 +62,31 @@ public class Check_Server extends JFrame{
 		public Multiple(Socket socket) {
 			this.socket = socket;
 		}
-		@Override
 		public void run() {
-			try {
-				BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-				
-				while(true) {
-					String receiveWord = br.readLine();
-					if(receiveWord == null)
-						break;
-					
-					if(wordList.indexOf(receiveWord) >= 0) {
-						ta.append(receiveWord+"=Yes"+"\n");
-						bw.write("Yes" + "\n");
-						bw.flush();
-					}
-					else {
-						ta.append(receiveWord+"=No"+"\n");
-						bw.write("No" + "\n");
-						bw.flush();
-					}
-				}
-			}
-			catch(Exception e) {
-				System.out.println(e.getMessage());
-			}
-		}
+	        try {
+	            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+	            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+
+	            while (true) {
+	                String receiveWord = br.readLine();
+	                if (receiveWord == null)
+	                    break;
+
+	                if (wordList.contains(receiveWord)) {  // 단어가 리스트에 있는지 확인
+	                    ta.append(receiveWord + "=Yes" + "\n");
+	                    bw.write("Yes" + "\n");
+	                    bw.flush();
+	                } else {
+	                    ta.append(receiveWord + "=No" + "\n");
+	                    bw.write("No" + "\n");
+	                    bw.flush();
+	                }
+	            }
+	        } catch (Exception e) {
+	            System.out.println(e.getMessage());
+	        }
+	    }
 	}
-	
 	public static void main(String[] args) {
 		new Check_Server();
 	}
